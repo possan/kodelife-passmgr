@@ -54,9 +54,9 @@ function load() {
   async function handleDownloadBlob(blob: Blob, filename: string) {
     console.log("download blob", blob, filename);
 
-    var a = document.createElement("a");
+    var a = document.createElement("a") as HTMLAnchorElement;
     document.body.appendChild(a);
-    a.style = "display: none";
+    a.setAttribute("style", "display: none");
 
     const url = window.URL.createObjectURL(blob);
     a.href = url;
@@ -115,7 +115,7 @@ function load() {
 
         const packed = new PackedKLProject();
         try {
-          await packed.loadFromArray(bindata, file.name);
+          await packed.loadFromArray(bindata as ArrayBuffer, file.name);
         } catch (e) {
           reject(e);
           return;
@@ -237,61 +237,63 @@ function load() {
     return tmp2;
   }
 
-  project1header.addEventListener("upload", async (e) => {
+  project1header.addEventListener("upload", async (e: CustomEvent) => {
     const clone = await handleUploadProject1(e.detail.file);
     updateProject1IfEmpty(clone);
     updateProject2IfEmpty(clone);
     updateProject3IfEmpty(clone);
   });
 
-  project2header.addEventListener("upload", async (e) => {
+  project2header.addEventListener("upload", async (e: CustomEvent) => {
     const clone = await handleUploadProject2(e.detail.file);
     updateProject1IfEmpty(clone);
     updateProject2IfEmpty(clone);
     updateProject3IfEmpty(clone);
   });
 
-  project3header.addEventListener("upload", async (e) => {
+  project3header.addEventListener("upload", async (e: CustomEvent) => {
     const clone = await handleUploadProject3(e.detail.file);
     updateProject1IfEmpty(clone);
     updateProject2IfEmpty(clone);
     updateProject3IfEmpty(clone);
   });
 
-  project1header?.addEventListener("clear", async (e) => {
+  project1header?.addEventListener("clear", async (_e: Event) => {
     project1 = undefined;
     project1header?.setProject(project1);
     project1passlist.clear();
     project1passlistelement?.setList(project1passlist.passes);
   });
 
-  project2header?.addEventListener("clear", async (e) => {
+  project2header?.addEventListener("clear", async (_e: Event) => {
     project2 = undefined;
     project2header?.setProject(project2);
     project2passlist.clear();
     project2passlistelement?.setList(project2passlist.passes);
   });
 
-  project3header?.addEventListener("clear", async (e) => {
+  project3header?.addEventListener("clear", async (_e: Event) => {
     project3 = undefined;
     project3header?.setProject(project3);
     project3passlist.clear();
     project3passlistelement?.setList(project3passlist.passes);
   });
 
-  project1header?.addEventListener("download", async (e) =>
+  project1header?.addEventListener("download", async (e: CustomEvent) =>
     handleDownload(project1, project1passlist.getIds(), e.detail)
   );
 
-  project2header?.addEventListener("download", async (e) =>
+  project2header?.addEventListener("download", async (e: CustomEvent) =>
     handleDownload(project2, project2passlist.getIds(), e.detail)
   );
 
-  project3header?.addEventListener("download", async (e) =>
+  project3header?.addEventListener("download", async (e: CustomEvent) =>
     handleDownload(project3, project3passlist.getIds(), e.detail)
   );
 
-  function handleRemove(ed: ListRemoveEventDetails) {
+  function handleRemoveEvent(e: CustomEvent<ListRemoveEventDetails>) {
+    const ed = e.detail;
+
     console.log("handle drop", ed);
 
     if (ed.list === "project1passlist") {
@@ -309,7 +311,9 @@ function load() {
     project3passlistelement?.setList(project3passlist.passes);
   }
 
-  function handleDrop(ed: ListDropEventDetails) {
+  function handleDropEvent(e: CustomEvent<ListDropEventDetails>) {
+    const ed = e.detail;
+
     console.log("handle drop", ed);
 
     if (ed.copying) {
@@ -410,29 +414,13 @@ function load() {
   project2passlistelement.setList(project2passlist.passes);
   project3passlistelement.setList(project3passlist.passes);
 
-  project1passlistelement.addEventListener("drop", (e) => {
-    handleDrop(e.detail);
-  });
+  project1passlistelement.addEventListener("drop", handleDropEvent);
+  project2passlistelement.addEventListener("drop", handleDropEvent);
+  project3passlistelement.addEventListener("drop", handleDropEvent);
 
-  project2passlistelement.addEventListener("drop", (e) => {
-    handleDrop(e.detail);
-  });
-
-  project3passlistelement.addEventListener("drop", (e) => {
-    handleDrop(e.detail);
-  });
-
-  project1passlistelement.addEventListener("remove", (e) => {
-    handleRemove(e.detail);
-  });
-
-  project2passlistelement.addEventListener("remove", (e) => {
-    handleRemove(e.detail);
-  });
-
-  project3passlistelement.addEventListener("remove", (e) => {
-    handleRemove(e.detail);
-  });
+  project1passlistelement.addEventListener("remove", handleRemoveEvent);
+  project2passlistelement.addEventListener("remove", handleRemoveEvent);
+  project3passlistelement.addEventListener("remove", handleRemoveEvent);
 }
 
 window.addEventListener("load", load);

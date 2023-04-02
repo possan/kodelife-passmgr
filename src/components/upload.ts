@@ -1,8 +1,8 @@
 import { LitElement, html, css } from "lit";
-import { customElement, property, state, query } from "lit/decorators.js";
+import { customElement, query } from "lit/decorators.js";
 
 @customElement("klutil-upload-dropzone")
-class UploadDropzoneElement extends LitElement {
+export class UploadDropzoneElement extends LitElement {
   static styles = css`
     div.main {
       display: flex;
@@ -50,8 +50,9 @@ class UploadDropzoneElement extends LitElement {
   }
 
   private _fileChanged(e: Event) {
-    console.log("file changed", this._fileelement, e, e.target.files);
-    const file = e.target.files[0];
+    const input = this._fileelement;
+    console.log("file changed", this._fileelement, e, input.files);
+    const file = input.files[0];
     const event = new CustomEvent("upload", {
       bubbles: true,
       composed: true,
@@ -62,7 +63,7 @@ class UploadDropzoneElement extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _drop(e: Event) {
+  private _drop(e: DragEvent) {
     console.log("drop", e);
     e.stopPropagation(); // Stops some browsers from redirecting.
     e.preventDefault();
@@ -102,7 +103,7 @@ class UploadDropzoneElement extends LitElement {
     }
   }
 
-  private _dragOver(e: Event) {
+  private _dragOver(e: DragEvent) {
     console.log("drag over", e);
     e.preventDefault();
 

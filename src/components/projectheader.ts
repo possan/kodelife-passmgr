@@ -71,7 +71,7 @@ export class ProjectHeaderElement extends LitElement {
     this.requestUpdate();
   }
 
-  private _upload(e: Event) {
+  private _upload(e: CustomEvent) {
     const event = new CustomEvent("upload", {
       bubbles: true,
       composed: true,
@@ -80,7 +80,7 @@ export class ProjectHeaderElement extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _clickSerialize(e: Event) {
+  private _clickSerialize(_e: Event) {
     const event = new CustomEvent("download", {
       bubbles: true,
       composed: true,
@@ -91,7 +91,7 @@ export class ProjectHeaderElement extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _clickSerialize2(e: Event) {
+  private _clickSerialize2(_e: Event) {
     const event = new CustomEvent("download", {
       bubbles: true,
       composed: true,
@@ -102,7 +102,7 @@ export class ProjectHeaderElement extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _clear(e: Event) {
+  private _clear(_e: Event) {
     const event = new CustomEvent("clear", {
       bubbles: true,
       composed: true,
@@ -114,10 +114,7 @@ export class ProjectHeaderElement extends LitElement {
     if (this._project) {
       return html`
         <div class="header">
-          <p>
-            <!-- <b>Project loaded:</b><br /> -->
-            ${this._project?.filename}
-          </p>
+          <p>${this._project?.filename}</p>
 
           <div class="actions">
             <klutil-button

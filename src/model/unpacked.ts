@@ -116,7 +116,7 @@ export class KLProject {
       passesnode.innerHTML = "";
     }
 
-    return newproject;
+    return Promise.resolve(newproject);
   }
 
   cloneWithPasses(
@@ -140,10 +140,7 @@ export class KLProject {
       });
     }
 
-    // const emptycopy = await this.createCopyWithoutPasses();
-    // \newproject.setXML(this._xml, `Copy of ${this.filename}`);
-
-    return newproject;
+    return Promise.resolve(newproject);
   }
 
   getPass(id: string): Pass | undefined {
@@ -172,18 +169,6 @@ export class KLProject {
     return ret;
   }
 
-  removeAllPasses() {}
-
-  replacePass(id: string, pass: Pass) {
-    return;
-  }
-
-  removePass(id: string) {}
-
-  addPass(pass: Pass) {
-    return undefined;
-  }
-
   getPassOrder(): string[] {
     const order = [];
     // assign unique id's to each pass
@@ -196,9 +181,5 @@ export class KLProject {
     });
 
     return order;
-  }
-
-  setPassOrder(order: string[]) {
-    return undefined;
   }
 }

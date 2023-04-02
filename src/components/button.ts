@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 @customElement("klutil-button")
-class ButtonElement extends LitElement {
+export class ButtonElement extends LitElement {
   static styles = css`
     button {
       display: block;
